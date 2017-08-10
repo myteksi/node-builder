@@ -5,6 +5,6 @@ FROM node:8.1.2
 # We need backports.ssl_match_hostname, or we get a import error for some reason while running this
 # on travis
 RUN apt-get update && \
-  apt-get install -y --no-install-recommends git mysql-client python-dev python-pip && \
-  pip install --upgrade backports.ssl_match_hostname awscli && \
+  apt-get install -y git mysql-client python-pip python-dev && \
+  pip install --upgrade awscli && \
   npm i -g yarn lerna gatsby
