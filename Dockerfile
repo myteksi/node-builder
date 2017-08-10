@@ -4,5 +4,5 @@ FROM node:8.1.2
 # to install the awscli. We use the awscli to upload web app bundles to S3
 RUN apt-get update && \
   apt-get install -y --no-install-recommends git mysql-client python-dev python-pip && \
-  pip install awscli && \
+  pip install --upgrade awscli && \
   npm i -g yarn lerna gatsby
