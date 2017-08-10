@@ -1,7 +1,16 @@
 FROM node:8.1.2
 
+# We need to compile python with SSL, or the aws cli command will not work when doing a cp to S3.
+# I extracted out this file from the python tarball, and added the following line in the python
+# compilation to replace it
+# ```
+# && cp Setup.dist /usr/src/python/Modules \
+# ```
+# In Setup.Dist, I uncommented out lines 209-212 as documented by:
+# http://paltman.com/getting-ssl-support-in-python-251/
+COPY Setup.dist .
+
 # From python:3.6 dockerfile https://github.com/docker-library/python/blob/d3c5f47b788adb96e69477dadfb0baca1d97f764/3.6/jessie/Dockerfile
-# We need to compile python with SSL, or the aws cli command will not work
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
@@ -35,6 +44,7 @@ RUN set -ex \
 	&& rm -rf "$GNUPGHOME" python.tar.xz.asc \
 	&& mkdir -p /usr/src/python \
 	&& tar -xJC /usr/src/python --strip-components=1 -f python.tar.xz \
+        && cp Setup.dist /usr/src/python/Modules \
 	&& rm python.tar.xz \
 	\
 	&& cd /usr/src/python \
